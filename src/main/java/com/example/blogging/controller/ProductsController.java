@@ -4,7 +4,7 @@ package com.example.blogging.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.blogging.domain.Product;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class ProductsController {
     public ResponseEntity<Product> getProduct(@PathVariable Long id) {
 
         return products.stream()
-                .filter(product -> product.id().equals(id))
+                .filter(product -> product.getId().equals(id))
                 .findFirst()
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -38,7 +38,7 @@ public class ProductsController {
 
         List<Product> result = products.stream()
                 .filter(product ->
-                        product.name()
+                        product.getName()
                                 .toLowerCase()
                                 .contains(name.toLowerCase()))
                 .toList();
@@ -66,13 +66,13 @@ public class ProductsController {
 
         for (int i = 0; i < products.size(); i++) {
 
-            if (products.get(i).id().equals(id)) {
+            if (products.get(i).getId().equals(id)) {
 
                 Product product = new Product(
                         id,
-                        updatedProduct.name(),
-                        updatedProduct.price(),
-                        updatedProduct.category()
+                        updatedProduct.getName(),
+                        updatedProduct.getPrice(),
+                        updatedProduct.getCategory()
                 );
 
                 products.set(i, product);
@@ -90,7 +90,7 @@ public class ProductsController {
             @PathVariable Long id) {
 
         boolean removed = products.removeIf(
-                product -> product.id().equals(id));
+                product -> product.getId().equals(id));
 
         if (removed) {
             return ResponseEntity.noContent().build();
@@ -99,13 +99,13 @@ public class ProductsController {
         return ResponseEntity.notFound().build();
     }
 
-    // Simple record used as the Product model
-    public record Product(
-            Long id,
-            String name,
-            double price,
-            String category
-    ) {
-    }
+    // // Simple record used as the Product model
+    // public record Product(
+    //         Long id,
+    //         String name,
+    //         double price,
+    //         String category
+    // ) {
+    // }
 }
 
